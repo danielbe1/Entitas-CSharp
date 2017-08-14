@@ -24,7 +24,7 @@ namespace Entitas {
         }
 
         /// Adds the system instance to the systems list.
-        public virtual Systems Add(ISystem system) {
+        public virtual Systems Add(ISystem system, params object[] feature) {
             var initializeSystem = system as IInitializeSystem;
             if (initializeSystem != null) {
                 _initializeSystems.Add(initializeSystem);

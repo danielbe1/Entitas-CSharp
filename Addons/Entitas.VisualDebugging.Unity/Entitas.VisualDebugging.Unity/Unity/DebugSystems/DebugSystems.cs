@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
@@ -101,12 +102,14 @@ namespace Entitas.VisualDebugging.Unity {
         List<SystemInfo> _executeSystemInfos;
         List<SystemInfo> _cleanupSystemInfos;
         List<SystemInfo> _tearDownSystemInfos;
-
+        
         Stopwatch _stopwatch;
 
         double _executeDuration;
         double _cleanupDuration;
 
+        private Dictionary<String, FeatureSystems> _features;
+        
         public DebugSystems(string name) {
             initialize(name);
         }
@@ -128,9 +131,11 @@ namespace Entitas.VisualDebugging.Unity {
             _tearDownSystemInfos = new List<SystemInfo>();
 
             _stopwatch = new Stopwatch();
+
+            _features = new Dictionary<String, FeatureSystems>();
         }
 
-        public override Systems Add(ISystem system) {
+        public override Systems Add(ISystem system, params object[] features) {
             _systems.Add(system);
 
             SystemInfo childSystemInfo;
@@ -158,6 +163,8 @@ namespace Entitas.VisualDebugging.Unity {
                 _tearDownSystemInfos.Add(childSystemInfo);
             }
 
+            AddSystemToFeatures(features, system);
+            
             return base.Add(system);
         }
 
@@ -244,6 +251,67 @@ namespace Entitas.VisualDebugging.Unity {
                     _stopwatch.Stop();
                     systemInfo.teardownDuration = _stopwatch.Elapsed.TotalMilliseconds;
                 }
+            }
+        }
+        
+        private void AddSystemToFeatures(object[] features, ISystem system)
+        {
+            foreach (var feature in features)
+                AddSystemToFeature(feature.ToString(), system);
+        }
+        
+        private void AddSystemToFeature(string name, ISystem system)
+        {
+            FeatureSystems feature;
+
+            if (!_features.TryGetValue(name, out feature))
+            {
+                var newFeature = new FeatureSystems(name);
+                _features.Add(name, newFeature);
+                feature = newFeature;
+            }
+            
+            feature.Add(system);
+        }
+    }
+    
+    public class FeatureSystems
+    {
+        public string Name;
+        
+        public List<IInitializeSystem> InitializeSystems;
+        public List<IExecuteSystem> ExecuteSystems;
+        public List<ICleanupSystem> CleanupSystems;
+        public List<ITearDownSystem> TearDownSystems;
+
+        public FeatureSystems(string name)
+        {
+            Name = name;
+            InitializeSystems = new List<IInitializeSystem>();
+            ExecuteSystems = new List<IExecuteSystem>();
+            CleanupSystems = new List<ICleanupSystem>();
+            TearDownSystems = new List<ITearDownSystem>();
+        }
+        
+        public void Add(ISystem system) {
+            var initializeSystem = system as IInitializeSystem;
+            if (initializeSystem != null) {
+                InitializeSystems.Add(initializeSystem);
+            }
+
+            var executeSystem = system as IExecuteSystem;
+            if (executeSystem != null) {
+                ExecuteSystems.Add(executeSystem);
+            }
+
+            var cleanupSystem = system as ICleanupSystem;
+            if (cleanupSystem != null) {
+                CleanupSystems.Add(cleanupSystem);
+            }
+
+            var tearDownSystem = system as ITearDownSystem;
+            if (tearDownSystem != null) {
+                TearDownSystems.Add(tearDownSystem);
             }
         }
     }
