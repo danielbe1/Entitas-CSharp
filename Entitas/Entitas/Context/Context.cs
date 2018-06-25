@@ -134,7 +134,7 @@ namespace Entitas {
 
         /// Creates a new entity or gets a reusable entity from the
         /// internal ObjectPool for entities.
-        public TEntity CreateEntity() {
+        protected TEntity InternalCreateEntity() {
             TEntity entity;
 
             if (_reusableEntities.Count > 0) {
@@ -255,6 +255,12 @@ namespace Entitas {
             }
 
             return group;
+        }
+
+        public TEntity CloneEntity(IEntity entity, bool replaceExisting = false, params int[] indices) {
+                var target = InternalCreateEntity();
+                entity.CopyTo(target, replaceExisting, indices);
+                return target;
         }
 
         /// Adds the IEntityIndex for the specified name.

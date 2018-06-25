@@ -5,7 +5,7 @@ class describe_Context : nspec {
 
     void when_created() {
 
-        IContext<TestEntity> ctx = null;
+        MyTestContext ctx = null;
 
         before = () => {
             ctx = new MyTestContext();

@@ -7,7 +7,7 @@ class describe_PublicMemberInfoEntityExtension : nspec {
 
         context["when copying components"] = () => {
 
-            IContext<TestEntity> ctx = null;
+            MyTestContext ctx = null;
             TestEntity entity = null;
             TestEntity target = null;
             NameAgeComponent nameAge = null;

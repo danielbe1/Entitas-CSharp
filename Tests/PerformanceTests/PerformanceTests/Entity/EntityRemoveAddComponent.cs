@@ -3,7 +3,7 @@ using Entitas;
 public class EntityRemoveAddComponent : IPerformanceTest {
 
     const int n = 1000000;
-    IContext<Entity> _context;
+    Helper.Context<Entity> _context;
     IEntity _e;
     ComponentA _componentA;
 

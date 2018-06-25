@@ -40,7 +40,8 @@ namespace Entitas.CodeGeneration.Plugins {
                 new CustomPrefixComponentDataProvider(),
                 new ShouldGenerateComponentComponentDataProvider(),
                 new ShouldGenerateMethodsComponentDataProvider(),
-                new ShouldGenerateComponentIndexComponentDataProvider()
+                new ShouldGenerateComponentIndexComponentDataProvider(),
+                new LifeCycleComponentDataProvider()
             };
         }
 

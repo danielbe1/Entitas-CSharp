@@ -36,8 +36,6 @@ namespace Entitas {
 
     public interface IContext<TEntity> : IContext where TEntity : class, IEntity {
 
-        TEntity CreateEntity();
-
         // TODO Obsolete since 0.42.0, April 2017
         [Obsolete("Please use entity.Destroy()")]
         void DestroyEntity(TEntity entity);
@@ -46,5 +44,7 @@ namespace Entitas {
         TEntity[] GetEntities();
 
         IGroup<TEntity> GetGroup(IMatcher<TEntity> matcher);
+
+        TEntity CloneEntity(IEntity entity, bool replaceExisting = false, params int[] indices);
     }
 }

@@ -8,4 +8,8 @@ public sealed class MyTestContext : Context<TestEntity> {
     public MyTestContext(int totalComponents, int startCreationIndex, ContextInfo contextInfo)
         : base(totalComponents, startCreationIndex, contextInfo, (entity) => new SafeAERC(entity)) {
     }
+    
+    public TestEntity CreateEntity() {
+        return InternalCreateEntity();
+    }
 }

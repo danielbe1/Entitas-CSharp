@@ -3,7 +3,7 @@ using NSpec;
 
 class describe_Collector : nspec {
 
-    IContext<TestEntity> _context;
+    MyTestContext _context;
 
     void when_created() {
 

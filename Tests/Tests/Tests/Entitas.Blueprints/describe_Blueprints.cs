@@ -6,7 +6,7 @@ class describe_Blueprints : nspec {
 
     void when_creating() {
 
-        IContext<TestEntity> ctx = null;
+        MyTestContext ctx = null;
         TestEntity entity = null;
 
         before = () => {

@@ -208,8 +208,8 @@ class describe_ReactiveSystem : nspec {
 
         context["multiple contexts"] = () => {
 
-            IContext<TestEntity> context1 = null;
-            IContext<TestEntity> context2 = null;
+            MyTestContext context1 = null;
+            MyTestContext context2 = null;
 
             before = () => {
                 context1 = new MyTestContext();

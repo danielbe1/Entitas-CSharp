@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -31,6 +31,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entitas.CodeGeneration\CodeGeneration\CodeGenerationException.cs" />
     <Compile Include="Entitas.CodeGeneration\CodeGeneration\CodeGeneratorData.cs" />
     <Compile Include="Entitas.CodeGeneration\CodeGeneration\CodeGenFile.cs" />
     <Compile Include="Entitas.CodeGeneration\CodeGeneration\Interfaces\ICodeGenerator.cs" />
@@ -46,6 +47,10 @@
     <ProjectReference Include="..\..\Entitas.Utils\Entitas.Utils.csproj">
       <Project>{344251CF-6CA3-4272-B92E-69CCF7D26700}</Project>
       <Name>Entitas.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Entitas\Entitas.csproj">
+      <Project>{a0a11cc3-8b1e-4345-a5fa-01fc60e581d8}</Project>
+      <Name>Entitas</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

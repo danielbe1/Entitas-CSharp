@@ -10,7 +10,7 @@ class describe_EntityIndex : nspec {
         context["single key"] = () => {
 
             PrimaryEntityIndex<TestEntity, string> index = null;
-            IContext<TestEntity> ctx = null;
+            MyTestContext ctx = null;
             IGroup<TestEntity> group = null;
 
             before = () => {
@@ -122,7 +122,7 @@ class describe_EntityIndex : nspec {
         context["multiple keys"] = () => {
 
             PrimaryEntityIndex<TestEntity, string> index = null;
-            IContext<TestEntity> ctx = null;
+            MyTestContext ctx = null;
             IGroup<TestEntity> group = null;
 
             before = () => {
@@ -189,7 +189,7 @@ class describe_EntityIndex : nspec {
         context["single key"] = () => {
 
             EntityIndex<TestEntity, string> index = null;
-            IContext<TestEntity> ctx = null;
+            MyTestContext ctx = null;
             IGroup<TestEntity> group = null;
 
             before = () => {
@@ -306,7 +306,7 @@ class describe_EntityIndex : nspec {
         context["multiple keys"] = () => {
 
             EntityIndex<TestEntity, string> index = null;
-            IContext<TestEntity> ctx = null;
+            MyTestContext ctx = null;
             IGroup<TestEntity> group = null;
             TestEntity entity1 = null;
             TestEntity entity2 = null;
@@ -394,7 +394,7 @@ class describe_EntityIndex : nspec {
 
         #pragma warning disable
         EntityIndex<TestEntity, string> index = null;
-        IContext<TestEntity> ctx = null;
+        MyTestContext ctx = null;
         IGroup<TestEntity> group = null;
 
         before = () => {

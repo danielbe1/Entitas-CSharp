@@ -6,6 +6,9 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+
+using System;
+
 public sealed partial class GameContext : Entitas.Context<GameEntity> {
 
     public GameContext()
@@ -26,5 +29,9 @@ public sealed partial class GameContext : Entitas.Context<GameEntity> {
 #endif
 
         ) {
+    }
+    
+    public GameEntity CreateEntity() {
+        return InternalCreateEntity();
     }
 }

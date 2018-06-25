@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Entitas.CodeGeneration.Attributes;
 using Entitas.Utils;
 
 namespace Entitas.CodeGeneration.Plugins {
@@ -16,7 +18,7 @@ namespace Entitas.CodeGeneration.Plugins {
 
         readonly IgnoreNamespacesConfig _ignoreNamespacesConfig = new IgnoreNamespacesConfig();
 
-        const string STANDARD_COMPONENT_TEMPLATE =
+        const string MUTABLE_COMPONENT_TEMPLATE =
 @"public partial class ${ContextName}Entity {
 
     public ${ComponentType} ${componentName} { get { return (${ComponentType})GetComponent(${Index}); } }
@@ -42,6 +44,35 @@ ${memberAssignment}
 }
 ";
 
+        const string IMMUTABLE_COMPONENT_TEMPLATE =
+@"public partial class ${ContextName}Entity {
+
+    public readonly ${ComponentType} Safe${componentName}
+}
+";
+        
+        const string MANDATORY_COMPONENT_TEMPLATE =
+@"public partial class ${ContextName}Entity {
+
+    public ${ComponentType} ${componentName} { 
+        get {
+            return (${ComponentType})GetComponent(${Index}); 
+        } 
+    }
+
+    public void Replace${ComponentName}(${memberArgs}) {
+        var index = ${Index};
+        var component = CreateComponent<${ComponentType}>(index);
+${memberAssignment}
+        ReplaceComponent(index, component);
+    }
+
+    public void Set${ComponentName}ToDefault() {
+        RemoveComponent(${Index});
+    }
+}
+";
+        
         const string MEMBER_ARGS_TEMPLATE =
 @"${MemberType} new${MemberName}";
 
@@ -90,9 +121,7 @@ ${memberAssignment}
             var componentName = data.GetFullTypeName().ToComponentName(_ignoreNamespacesConfig.ignoreNamespaces);
             var index = contextName + ComponentsLookupGenerator.COMPONENTS_LOOKUP + "." + componentName;
             var memberData = data.GetMemberData();
-            var template = memberData.Length == 0
-                                      ? FLAG_COMPONENT_TEMPLATE
-                                      : STANDARD_COMPONENT_TEMPLATE;
+            var template = getTemplate(contextName, memberData, data.GetLifeCycleType());
 
             var fileContent = template
                 .Replace("${ContextName}", contextName)
@@ -134,6 +163,26 @@ ${memberAssignment}
                 .ToArray();
 
             return string.Join("\n", assignments);
+        }
+
+        string getTemplate(string contextName, MemberData[] memberData, LifeCycleAttribute.LifecycleType lifeCycleType) {
+            if (memberData.Length == 0 && lifeCycleType != LifeCycleAttribute.LifecycleType.Mutable)
+                throw new CodeGenerationException("Illegal life cycle specification", "only mutable components can have 0 fields");
+
+            if (memberData.Length == 0)
+                return FLAG_COMPONENT_TEMPLATE;
+            
+            switch (lifeCycleType)
+            {
+                case LifeCycleAttribute.LifecycleType.Mutable:
+                    return MUTABLE_COMPONENT_TEMPLATE;
+                case LifeCycleAttribute.LifecycleType.Immutable:
+                    return IMMUTABLE_COMPONENT_TEMPLATE;
+                case LifeCycleAttribute.LifecycleType.Mandatory:
+                    return MANDATORY_COMPONENT_TEMPLATE;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(lifeCycleType), lifeCycleType, null);
+            }
         }
     }
 }

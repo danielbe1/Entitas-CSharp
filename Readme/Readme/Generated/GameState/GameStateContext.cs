@@ -27,4 +27,8 @@ public sealed partial class GameStateContext : Entitas.Context<GameStateEntity> 
 
         ) {
     }
+    
+    public GameStateEntity CreateEntity() {
+        return InternalCreateEntity();
+    }
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -46,6 +46,7 @@
     <Compile Include="Entitas.CodeGeneration.Plugins\Plugins\DataProviders\Components\Providers\ContextsComponentDataProvider.cs" />
     <Compile Include="Entitas.CodeGeneration.Plugins\Plugins\DataProviders\Components\Providers\IComponentDataProvider.cs" />
     <Compile Include="Entitas.CodeGeneration.Plugins\Plugins\DataProviders\Components\Providers\IsUniqueComponentDataProvider.cs" />
+    <Compile Include="Entitas.CodeGeneration.Plugins\Plugins\DataProviders\Components\Providers\LifeCycleComponentDataProvider.cs" />
     <Compile Include="Entitas.CodeGeneration.Plugins\Plugins\DataProviders\Components\Providers\MemberDataComponentDataProvider.cs" />
     <Compile Include="Entitas.CodeGeneration.Plugins\Plugins\DataProviders\Components\Providers\ShouldGenerateComponentComponentDataProvider.cs" />
     <Compile Include="Entitas.CodeGeneration.Plugins\Plugins\DataProviders\Components\Providers\ShouldGenerateComponentIndexComponentDataProvider.cs" />

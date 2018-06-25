@@ -13,6 +13,8 @@ namespace Entitas.CodeGeneration.Plugins {
         const string CONTEXT_TEMPLATE =
 @"public sealed partial class ${ContextName}Context : Entitas.Context<${ContextName}Entity> {
 
+    public Entitas.Context<${ContextName}Entity> InternalContext;
+
     public ${ContextName}Context()
         : base(
             ${Lookup}.TotalComponents,
@@ -31,6 +33,34 @@ namespace Entitas.CodeGeneration.Plugins {
 #endif
 
         ) {
+    }
+
+    public ${ContextName}Entity CreateEntity(${CreationArgs}) {
+        TEntity entity;
+
+        if (_reusableEntities.Count > 0) {
+            entity = _reusableEntities.Pop();
+            entity.Reactivate(_creationIndex++);
+        } else {
+            entity = (TEntity)Activator.CreateInstance(typeof(TEntity));
+            entity.Initialize(_creationIndex++, _totalComponents, _componentPools, _contextInfo, _aercFactory(entity));
+        }
+
+        _entities.Add(entity);
+        entity.Retain(this);
+        _entitiesCache = null;
+        entity.OnComponentAdded += _cachedEntityChanged;
+        entity.OnComponentRemoved += _cachedEntityChanged;
+        entity.OnComponentReplaced += _cachedComponentReplaced;
+        entity.OnEntityReleased += _cachedEntityReleased;
+        entity.OnDestroyEntity += _cachedDestroyEntity;
+
+        if (OnEntityCreated != null) {
+            OnEntityCreated(this, entity);
+        }
+
+        ${Creation}
+        return entity;
     }
 }
 ";

@@ -27,4 +27,8 @@ public sealed partial class Test2Context : Entitas.Context<Test2Entity> {
 
         ) {
     }
+    
+    public Test2Entity CreateEntity() {
+        return InternalCreateEntity();
+    }
 }
